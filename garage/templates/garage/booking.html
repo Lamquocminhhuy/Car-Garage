@@ -1,0 +1,12 @@
+{% extends 'garage/partials/main.html' %} {% block content %}
+<section id="booking-section">
+  <div id="wrap-form">
+    <h3>BOOKING</h3>
+    <form method="POST" action="">
+      {% csrf_token %} {{form.as_p}}
+      <input type="submit" value="Submit" id="submit" />
+    </form>
+  </div>
+</section>
+
+{% endblock content %}

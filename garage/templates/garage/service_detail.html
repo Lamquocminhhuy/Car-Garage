@@ -1,0 +1,31 @@
+{% extends 'garage/partials/main.html' %} {% block content %}
+<section class="about_section layout_padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="img-box">
+          <img src="/media/{{service.image}}" alt="" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="detail-box">
+          <div class="heading_container">
+            <h2>{{service.name}}</h2>
+          </div>
+          <p style="color: black">Giá : <span>{{service.price}} VND</span></p>
+          <p style="color: black">
+            Thời gian ước tính : <span>{{service.time_todo}} Phút</span>
+          </p>
+          <p style="color: black">
+            Mô tả dịch vụ : <span>{{service.description}} </span>
+          </p>
+
+          <a href="{% url 'booking' %}">Đặt ngay</a>
+          <a href="{% url 'homepage' %}">Xem các dịch vụ khác</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
