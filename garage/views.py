@@ -62,3 +62,5 @@ class BookingPage(LoginRequiredMixin, CreateView):
     form_class = BookingForm
     template_name = 'garage/booking.html'
     success_url = reverse_lazy('homepage')
+
+

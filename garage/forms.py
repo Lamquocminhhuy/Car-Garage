@@ -11,11 +11,19 @@ class BookingForm(forms.ModelForm):
 
     class Meta:     
         model = Booking
-        fields = "__all__"
+        fields = ["service", "date", "time_slot", "phone_number", "note"]
         widgets = {
             'date': DateInput(),
             'note': forms.Textarea(attrs={'rows': 4})
         }   
+        labels  = {
+            "service": "Dịch vụ",
+            "date": "Ngày đặt lịch",
+            "time_slot": "Thời gian",
+            "note": "Ghi chú",
+            "phone_number": "Số điện thoại"
+
+        }
     def __init__(self, user=None, **kwargs):
         super(BookingForm, self).__init__(**kwargs)
         self.fields['time_slot'].queryset = TimeSlot.objects.filter(isBusy=False)
@@ -26,6 +34,7 @@ class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
+      
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
