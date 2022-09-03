@@ -57,7 +57,7 @@ class ServiceDetail(DetailView):
     context_object_name = 'service'
 
     
-class BookingPage(CreateView):
+class BookingPage(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingForm
     template_name = 'garage/booking.html'

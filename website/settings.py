@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,3 +139,17 @@ STATIC_DIR,
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
+
+JAZZMIN_SETTINGS = {
+        "site_title": "Garage Cần Thơ",
+        "site_header": "Trang Quản Trị",
+        "site_brand": "Trang Quản Trị",
+        "welcome_sign": "Vui lòng đăng nhập tài khoản quản trị",
+        "copyright": "Lamquocminhhuy",
+        "user_avatar": None,
+        "site_logo": "/images/s5.png",
+        "user_avatar": None,
+
+
+
+}
