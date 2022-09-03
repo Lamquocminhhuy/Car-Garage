@@ -49,3 +49,8 @@ Car Garage for booking maintanence service. Website for Thesis project.
 4. `python manage.py colectstatic`
 
 ### Images of Project
+
+![image](https://user-images.githubusercontent.com/58679620/188282961-1e6ec746-653e-4ba7-a1f7-048b3a72744c.png)
+![image](https://user-images.githubusercontent.com/58679620/188282965-e43e8949-0b0a-47af-b61b-7e7d563164df.png)
+
+
