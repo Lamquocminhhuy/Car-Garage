@@ -63,4 +63,8 @@ class BookingPage(LoginRequiredMixin, CreateView):
     template_name = 'garage/booking.html'
     success_url = reverse_lazy('homepage')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(BookingPage, self).form_valid(form)
+
 
