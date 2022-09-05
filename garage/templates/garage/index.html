@@ -113,8 +113,10 @@
     {% load static %}   
     <script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
     <!-- bootstrap js -->
-    <script src="js/bootstrap.js"></script>
+    {% load static %}   
+    <script src="{% static '/js/bootstrap.js' %}"></script>
     <!-- custom js -->
-    <script src="js/custom.js"></script>
+    {% load static %}   
+    <script src="{% static '/js/custom.js' "></script>
     {% endblock content %}
 
