@@ -59,6 +59,21 @@ class Booking(models.Model):
     class Meta:
         verbose_name_plural  = 'Lịch hẹn'
 
+class BookingNoRegistration(models.Model):
+    user = models.CharField(max_length=255, blank=True, null=True,verbose_name="Khách hàng")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ")
+    date = models.DateField(null=True, verbose_name="Ngày đặt")
+    time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name="Khung giờ")
+    note = models.TextField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Số ĐT")
+    isCompleted = models.BooleanField(default=False, verbose_name="Đã xử lí")
+
+
+    def __str__(self):
+        return self.user + " đặt lịch vào " + str(self.time_slot) + " ngày " + str(self.date)
+    
+    class Meta:
+        verbose_name_plural  = 'Lịch hẹn (khách vãng lai)'
 
 
 

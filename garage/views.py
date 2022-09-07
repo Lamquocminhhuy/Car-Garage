@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, FormView
 
 from django.views.generic.detail import DetailView
-from .models import Garage, Service, Booking
+from .models import Garage, Service, Booking, BookingNoRegistration
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
@@ -13,8 +13,10 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth import login
-from .forms import BookingForm, UserCreationForm
+from .forms import BookingForm, UserCreationForm, BookingNoRegistrationForm
 from django.contrib.auth.models import AnonymousUser
+
+from django.contrib import messages
 # Create your views here.
 
 class CustomLoginView(LoginView):
@@ -67,6 +69,15 @@ class BookingPage(CreateView):
         
         form.instance.user = self.request.user
         return super(BookingPage, self).form_valid(form)
+
+class BookingNoResPage(CreateView):
+    model = BookingNoRegistration
+    form_class = BookingNoRegistrationForm
+    template_name = 'garage/booking_nores.html'
+    success_url = reverse_lazy('homepage')
+
+
+
 
 
 

@@ -31,6 +31,7 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
   <!-- font awesome style -->
   {% load static %}
@@ -79,12 +80,19 @@
             <li class="nav-item">
               <a class="nav-link" href=""> Về chúng tôi</a>
             </li>
-
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'booking' %}"
                 >Đặt lịch sửa chữa</a
               >
             </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'booking_no_resgister' %}"
+                >Đặt lịch sửa chữa</a
+              >
+            </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'homepage' %}#services"
                 >Dịch vụ</a

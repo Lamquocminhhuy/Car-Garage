@@ -24,4 +24,5 @@ admin.site.register(Garage)
 admin.site.register(Service, Service_Filter)
 admin.site.register(Booking, Booking_Filter)
 admin.site.register(TimeSlot,Time_Filter)
+admin.site.register(BookingNoRegistration,Booking_Filter)
 

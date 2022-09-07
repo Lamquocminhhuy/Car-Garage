@@ -9,6 +9,7 @@ urlpatterns = [
     path('register/', RegisterPage.as_view(), name ='register'),
     path('', Homepage.as_view(), name ='homepage'),
     path('booking/', BookingPage.as_view(), name ='booking'),
+    path('book/', BookingNoResPage.as_view(), name ='booking_no_resgister'),
     path('service/<int:pk>/', ServiceDetail.as_view(), name='service'),
    
 ]   
