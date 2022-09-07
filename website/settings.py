@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ylucjkw-nxf1$n_5u)6n&^!h&)o8g@_^6@qe1j#2%bqdbbzp@)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'garage.apps.GarageConfig',
+    
 ]
 
 MIDDLEWARE = [
@@ -147,9 +148,19 @@ JAZZMIN_SETTINGS = {
         "welcome_sign": "Vui lòng đăng nhập tài khoản quản trị",
         "copyright": "Lamquocminhhuy",
         "user_avatar": None,
-        "site_logo": "/images/s5.png",
         "user_avatar": None,
-
-
-
 }
+
+DATE_FORMAT = ( ( 'd-m-Y' ))
+DATETIME_FORMAT = (( 'd-m-Y H:i' ))
+
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Asia/Bangkok'
+
+USE_I18N = True
+
+USE_L10N = False
+
+USE_TZ = False

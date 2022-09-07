@@ -14,7 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth import login
 from .forms import BookingForm, UserCreationForm
-
+from django.contrib.auth.models import AnonymousUser
 # Create your views here.
 
 class CustomLoginView(LoginView):
@@ -57,14 +57,18 @@ class ServiceDetail(DetailView):
     context_object_name = 'service'
 
     
-class BookingPage(LoginRequiredMixin, CreateView):
+class BookingPage(CreateView):
     model = Booking
     form_class = BookingForm
     template_name = 'garage/booking.html'
     success_url = reverse_lazy('homepage')
 
     def form_valid(self, form):
+        
         form.instance.user = self.request.user
         return super(BookingPage, self).form_valid(form)
+
+
+
 
 
