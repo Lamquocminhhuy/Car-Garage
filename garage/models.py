@@ -45,7 +45,7 @@ class Booking(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Khách hàng")
     
-    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ sửa chữa")
     date = models.DateField(null=True, verbose_name="Ngày đặt")
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name="Khung giờ")
     note = models.TextField(max_length=255, blank=True)
