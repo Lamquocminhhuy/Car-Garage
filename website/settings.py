@@ -157,6 +157,7 @@ DATETIME_FORMAT = (( 'd-m-Y H:i' ))
 
 LANGUAGE_CODE = 'en-us'
 
+
 TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
@@ -164,3 +165,12 @@ USE_I18N = True
 USE_L10N = False
 
 USE_TZ = False
+
+# Send mail
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'canthogarage@gmail.com'
+EMAIL_HOST_PASSWORD = 'frfqfearttgkcmsy'

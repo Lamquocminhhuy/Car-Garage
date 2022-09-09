@@ -61,6 +61,7 @@ class Booking(models.Model):
 
 class BookingNoRegistration(models.Model):
     user = models.CharField(max_length=255, blank=True, null=True,verbose_name="Khách hàng")
+    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email")
     service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ")
     date = models.DateField(null=True, verbose_name="Ngày đặt")
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name="Khung giờ")

@@ -34,7 +34,7 @@ class BookingNoRegistrationForm(forms.ModelForm):
 
     class Meta:     
         model = BookingNoRegistration
-        fields = ["user","service", "date", "time_slot", "phone_number", "note"]
+        fields = ["user", "email","service", "date", "time_slot", "phone_number", "note"]
         widgets = {
             'date': DateInput(),
             'note': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Ghi chú nếu quý khách có thêm yêu cầu khác.'})
