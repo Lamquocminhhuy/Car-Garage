@@ -49,6 +49,7 @@
 }
 
 #booking-section p #id_service:focus,
+#id_user:focus,
 #id_date:focus,
 #id_time_slot:focus,
 #id_note:focus,

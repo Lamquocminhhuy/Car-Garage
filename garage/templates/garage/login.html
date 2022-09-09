@@ -6,7 +6,13 @@
 
 <div class="card-body">
   <form method="POST">
-    {% csrf_token %} {{form.as_p}}
+    {% csrf_token %}
+    <label>Tên đăng nhập</label>
+    {{form.username}}
+
+    <label>Mật khẩu</label>
+    {{form.password}}
+
     <input class="button" type="submit" value="Login" />
   </form>
   <p>Chưa có tài khoản? <a href="{% url 'register' %}">Đăng ký</a></p>
