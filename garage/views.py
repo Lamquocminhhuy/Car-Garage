@@ -121,6 +121,14 @@ Quý khách vui lòng đến garage vào lúc {form.instance.time_slot} để đ
    
         return super(BookingNoResPage, self).form_valid(form)
 
+class BookingDetail(DetailView):
+    model = Booking
+    context_object_name = 'book_data'
+
+class SearchResultsView(ListView):
+    model = Booking
+    template_name = 'search_results.html'
+
 
 
 
