@@ -1,20 +1,233 @@
 {% extends 'garage/partials/main.html' %} {% block content %}
-<section id="booking-section">
-  <div id="wrap-form">
-    <h3>Đặt lịch ngay</h3>
+<!-- slider section -->
 
-    <form method="POST" action="">
-      {% csrf_token %} {{form.as_p}}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="task-form">
+        {% csrf_token %}
+        <div class="container">
+          <label for="id_email">Họ và tên:</label>
+          <div class="input-group mb-3">
+        
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+            />
+          </div>
+         
+          <label for="basic-url" class="form-label">Email</label>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+            />
+          </div>
 
-      <input type="submit" value="Đặt lịch ngay" id="submit" />
-    </form>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Ngày"
+              id="date"
+              disabled
+            />
+            <span class="input-group-text">|</span>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Giờ"
+              id = "time"
+              disabled
+            />
+          </div>
+          <label for="id_email">Dịch vụ:</label>
+          <div class="input-group mb-3">
+        
+            <select class="form-select" id="service">
+
+              {% for service in services %}
+              <option value="{{service.id}}">{{service.name}}</option>
+              {% endfor %}
+            </select>
+     
+            </select>
+          </div>
+
+          <div class="input-group">
+            <span class="input-group-text">Note</span>
+            <textarea class="form-control" id="note"></textarea>
+          </div>
+        </div>
+        <button id="submit" class="btn btn-primary">Đặt lịch ngay</button>       
+      </form>
+     
+    </div>
   </div>
-</section>
-<script>
-  $(document).ready(function () {
-    $("form").submit(function () {
-      alert("Cảm ơn quý khách đã đặt lịch hẹn.");
-    });
-  });
-</script>
-{% endblock content %}
+</div>
+
+<article class="media content-section">
+ 
+  {% for day in days %}
+  <div class="media-body">
+    <div class="article-metadata">
+ 
+      <small>{{day.date}}</small>
+      <small>{{day.day}}</small>
+    </div>
+
+    <div class="wrap-button">
+      {% if not day.A_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        8:00
+      </button>
+
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+       X
+      </button>
+      {% endif %} {% if not day.B_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        9:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %} {% if not day.C_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        10:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %} {% if not day.D_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        11:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %} {% if not day.E_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        01:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+        
+      </button>
+      {% endif %} {% if not day.F_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        02:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %} {% if not day.G_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        03:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %} {% if not day.H_booked %}
+      <button
+        type="button"
+        class="btn btn-primary enable-button"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        04:00
+      </button>
+      {% else %}
+      <button
+        type="button"
+        class="btn btn-primary bg-secondary border-secondary disable-button"
+        disabled
+      >
+      X
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</article>
+{% endblock content%}

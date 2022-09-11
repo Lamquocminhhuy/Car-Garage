@@ -16,14 +16,12 @@
   <meta name="author" content="" />
 
   <title>{{garage.name}}</title>
-
-  <!-- bootstrap core css -->
-  {% load static %}
-
+  <!-- CSS only -->
   <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
     rel="stylesheet"
-    type="text/css"
-    href="{% static 'css/bootstrap.css' %}"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+    crossorigin="anonymous"
   />
 
   <!-- fonts style -->
@@ -47,6 +45,52 @@
   <!-- responsive style -->
   {% load static %}
   <link href="{% static  'css/responsive.css' %}" rel="stylesheet" />
+
+  <style>
+    .media {
+      padding: 30px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .media .media-body {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .media .media-body .wrap-button {
+      width: 95%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+    }
+
+    .enable-button,
+    .disable-button {
+      width: 100px;
+    }
+
+    .enable-button,
+    .disable-button {
+      margin: 5px;
+    }
+
+    #task-form {
+      width: fit-content;
+      padding: 30px;
+    }
+
+    #submit {
+      margin: 12px;
+    }
+  </style>
 </head>
 
 <body>
@@ -80,19 +124,13 @@
             <li class="nav-item">
               <a class="nav-link" href=""> Về chúng tôi</a>
             </li>
-            {% if request.user.is_authenticated %}
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'booking' %}"
                 >Đặt lịch sửa chữa</a
               >
             </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'booking_no_resgister' %}"
-                >Đặt lịch sửa chữa</a
-              >
-            </li>
-            {% endif %}
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'homepage' %}#services"
                 >Dịch vụ</a
@@ -120,3 +158,58 @@
     </div>
   </header>
 </body>
+
+<!-- jQery -->
+{% load static %}
+<script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
+<!-- bootstrap js -->
+{% load static %}
+<script src="{% static '/js/bootstrap.js' %}"></script>
+
+<script>
+  $(document).on("submit", "#task-form", function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "{% url 'booking_test' %}",
+      data: {
+        name: $("#name").val(),
+        date: $("#date").val(),
+        email: $("#email").val(),
+        time: $("#time").val(),
+        service: $("#service").val(),
+        note: $("#note").val(),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function () {
+        $("#name").val("");
+        $("#date").val("");
+        $("#email").val("");
+        $("#time").val("");
+        $("#service").val("");
+        $("#note").val("");
+        alert("Đã nhận được yêu cầu của quý khách!");
+        location.href = "";
+        return;
+      },
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target.classList.contains("enable-button")) {
+      const dateInput = document.querySelector("#date");
+      const timeInput = document.querySelector("#time");
+      const time = target.textContent.trim();
+
+      const wrapButton = target.parentElement;
+      const mediaBody = wrapButton.parentElement;
+      const articleMetadata = mediaBody.children[0];
+
+      const date = articleMetadata.children[0].textContent;
+
+      dateInput.value = date;
+      timeInput.value = time;
+    }
+  });
+</script>

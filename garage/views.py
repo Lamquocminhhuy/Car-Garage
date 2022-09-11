@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, FormView
 
 from django.views.generic.detail import DetailView
-from .models import Garage, Service, Booking, BookingNoRegistration,User
+from .models import *
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
@@ -13,7 +13,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth import login
-from .forms import BookingForm, UserCreationForm, BookingNoRegistrationForm
+from .forms import *
 from django.contrib.auth.models import AnonymousUser
 
 from django.contrib import messages
@@ -21,6 +21,7 @@ from django.contrib import messages
 
 from django.conf import settings
 from django.core.mail import send_mail
+import datetime
 # Create your views here.
 
 class CustomLoginView(LoginView):
@@ -63,76 +64,94 @@ class ServiceDetail(DetailView):
     context_object_name = 'service'
 
     
-class BookingPage(CreateView):
-    model = Booking
-    form_class = BookingForm
-    template_name = 'garage/booking.html'
-    success_url = reverse_lazy('homepage')
+
+def generate_daylist():
+    daylist = []
+    today = datetime.date.today()
+    map = {
+    "MONDAY": "THỨ HAI",
+    "TUESDAY": "THỨ BA",
+    "WEDNESDAY": "THỨ TƯ",
+    "THURSDAY": "THỨ NĂM",
+    "FRIDAY": "THỨ SÁU",
+    "SATURDAY": "THỨ BẢY",
+    "SUNDAY": "CHỦ NHẬT"
+    }
+    for i in range(7):
+        day = {}
+        curr_day = today + datetime.timedelta(days=i)
+        weekday = curr_day.strftime("%A").upper()
+
+        day["date"] = str(curr_day)
+        day['day'] = map[weekday]
+
+        day["A_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="8:00").exists()
+        )
+        day["B_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="9:00").exists()
+        )
+        day["C_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="10:00").exists()
+        )
+        day["D_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="11:00").exists()
+        )
+        day["E_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="01:00").exists()
+        )
+        day["F_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="02:00").exists()
+        )
+        day["G_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="03:00").exists()
+        )
+        day["H_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="04:00").exists()
+        )
+        if day["day"] != "SATURDAY":  # Writing lab doesn't open on Saturday
+            daylist.append(day)
+    return daylist
 
 
-
-    def form_valid(self, form):
-        
-        form.instance.user = self.request.user
-
-    
-        user = User.objects.get(username=self.request.user)
-        
-        subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
-        message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
-
-Đây là thông tin lịch hẹn của anh/chị:
-
-Tên khách hàng: {user.username}
-Ngày đặt: {form.instance.date}
-Dịch vụ: {form.instance.service}
-Ghi chú: {form.instance.note}
-
-Quý khách vui lòng đến garage vào lúc {form.instance.time_slot} để được hỗ trợ nhanh nhất.
-"""
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [user.email]
-        send_mail( subject, message, email_from, recipient_list )
+def booking(request):
+    services = Service.objects.all()
+    context = {"days": generate_daylist(), "services": services}
    
-        return super(BookingPage, self).form_valid(form)
+    return render(request, "garage/booking.html", context)
 
-class BookingNoResPage(CreateView):
-    model = BookingNoRegistration
-    form_class = BookingNoRegistrationForm
-    template_name = 'garage/booking_nores.html'
-    success_url = reverse_lazy('homepage')
 
-    def form_valid(self, form):    
-        subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
-        message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
 
-Đây là thông tin lịch hẹn của anh/chị:
+def BookingPage(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        date = request.POST.get("date")
+        time = request.POST.get("time")
+        service = request.POST.get("service")
+        note = request.POST.get("note")
 
-Tên khách hàng: {form.instance.user}
-Ngày đặt: {form.instance.date}
-Dịch vụ: {form.instance.service}
-Ghi chú: {form.instance.note}
+        service_b = Service.objects.get(id=service)
+        booking = Booking(user = name, email = email, date= date, timeblock= time, service= service_b, note= note)
+        booking.save()
 
-Quý khách vui lòng đến garage vào lúc {form.instance.time_slot} để được hỗ trợ nhanh nhất.
-"""
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [form.instance.email]
-        send_mail( subject, message, email_from, recipient_list )
+
    
-        return super(BookingNoResPage, self).form_valid(form)
+        # Send email
+        if email:
+            subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+            message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
+Đây là thông tin lịch hẹn của anh/chị:
+Tên khách hàng: {name}
+Ngày đặt: {date}
+Dịch vụ: {service}
+Ghi chú: {note}
+Quý khách vui lòng đến garage vào lúc {time} để được hỗ trợ nhanh nhất.
+"""
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail( subject, message, email_from, recipient_list )
 
-class BookingDetail(DetailView):
-    model = Booking
-    context_object_name = 'book_data'
-
-class SearchResultsView(ListView):
-    model = Booking
-    template_name = 'search_results.html'
 
 
-
-
-
-
-
-
+    return HttpResponse("hshshs")

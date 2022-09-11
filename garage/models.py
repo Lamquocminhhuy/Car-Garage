@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import date
+
 
 # Create your models here.
 
@@ -15,15 +18,6 @@ class Garage(models.Model):
     class Meta:
         verbose_name_plural  = 'Thông Tin Cửa Hàng'
 
-class TimeSlot(models.Model):
-    isBusy = models.BooleanField(default=False, verbose_name="Nghỉ")
-    time_slot = models.CharField(max_length=255, blank=True, null=True, verbose_name="Khung giờ")
-    
-
-    def __str__(self):
-        return self.time_slot
-    class Meta:
-        verbose_name_plural  = 'Thời gian làm việc'
 
 class Service(models.Model):
     name = models.CharField(max_length=255, blank=True, verbose_name='Tên Dịch Vụ')
@@ -40,41 +34,52 @@ class Service(models.Model):
         verbose_name_plural  = 'Dịch Vụ'
 
 
-
 class Booking(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Khách hàng")
-    
-    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ sửa chữa")
-    date = models.DateField(null=True, verbose_name="Ngày đặt")
-    time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name="Khung giờ")
-    note = models.TextField(max_length=255, blank=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Số ĐT")
-    isCompleted = models.BooleanField(default=False, verbose_name="Đã xử lí")
+
+    TIMEBLOCK_CHOICES = (
+        ("8:00", "8:00"),
+        ("9:00", "9:00"),
+        ("10:00", "10:00"),
+        ("11:00", "11:00"),
+        ("01:00", "01:00"), 
+        ("02:00", "02:00"),
+        ("03:00", "03:00"),
+        ("04:00", "04:00"),
+    )
+    STATUS_CHOICES = [ 
+    ("Đang chờ xử lí", "Đang chờ xử lí"),
+    ("Đã xử lí", "Đã xử lí"),
+    ("Đã hủy", "Đã hủy"),
+    ]
 
 
-    def __str__(self):
-        return str(self.user) + " đặt lịch vào " + str(self.time_slot) + " ngày " + str(self.date)
-    
+    user = models.CharField(max_length=255, blank=True, null=True, verbose_name="Khách hàng")
+    email = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email")
+    date = models.DateField(default=timezone.now,verbose_name="Ngày đặt")
+    timeblock = models.CharField(max_length=10, choices=TIMEBLOCK_CHOICES, default="8:00", verbose_name="Thời gian")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ")
+    note = models.TextField(max_length=300, blank=True, verbose_name="Ghi chú")
+    status = models.CharField(
+        max_length = 20,
+        choices = STATUS_CHOICES,
+        default = 'Đang chờ xử lí',
+        verbose_name = "Trạng Thái"
+        )
+
     class Meta:
         verbose_name_plural  = 'Lịch hẹn'
 
-class BookingNoRegistration(models.Model):
-    user = models.CharField(max_length=255, blank=True, null=True,verbose_name="Khách hàng")
-    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email")
-    service = models.ForeignKey(Service, on_delete=models.CASCADE,verbose_name= "Dịch vụ")
-    date = models.DateField(null=True, verbose_name="Ngày đặt")
-    time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, verbose_name="Khung giờ")
-    note = models.TextField(max_length=255, blank=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Số ĐT")
-    isCompleted = models.BooleanField(default=False, verbose_name="Đã xử lí")
-
-
     def __str__(self):
-        return self.user + " đặt lịch vào " + str(self.time_slot) + " ngày " + str(self.date)
-    
-    class Meta:
-        verbose_name_plural  = 'Lịch hẹn (khách vãng lai)'
+        return str(self.user) + " đặt lịch hẹn vào ngày" + str(self.date) + " lúc "+ self.timeblock + "giờ."
 
+    @property
+    def get_weekday(self):
+        return self.date.strftime("%A")
+
+  
+
+    def get_absolute_url(self):
+        # returns a complete url string and let view handle the redirect
+        return reverse("session-detail", kwargs={"pk": self.pk})
 
 
