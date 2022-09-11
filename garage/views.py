@@ -132,6 +132,7 @@ def BookingPage(request):
         note = request.POST.get("note")
 
         service_b = Service.objects.get(id=service)
+       
         booking = Booking(user = name, email = email, date= date, timeblock= time, service= service_b, note= note)
         booking.save()
 
