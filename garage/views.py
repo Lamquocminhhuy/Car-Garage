@@ -148,7 +148,7 @@ def BookingPage(request):
 Đây là thông tin lịch hẹn của anh/chị:
 Tên khách hàng: {name}
 Ngày đặt: {date}
-Dịch vụ: {service}
+Dịch vụ: {service_b}
 Ghi chú: {note}
 Quý khách vui lòng đến garage vào lúc {time} để được hỗ trợ nhanh nhất.
 """
