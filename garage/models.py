@@ -45,6 +45,7 @@ class Booking(models.Model):
         ("02:00", "02:00"),
         ("03:00", "03:00"),
         ("04:00", "04:00"),
+        ("05:00", "05:00")
     )
     STATUS_CHOICES = [ 
     ("Đang chờ xử lí", "Đang chờ xử lí"),

@@ -109,6 +109,9 @@ def generate_daylist():
         day["H_booked"] = (
             Booking.objects.filter(date=str(curr_day)).filter(timeblock="04:00").exists()
         )
+        day["I_booked"] = (
+            Booking.objects.filter(date=str(curr_day)).filter(timeblock="05:00").exists()
+        )
         if day["day"] != "SATURDAY":  # Writing lab doesn't open on Saturday
             daylist.append(day)
     return daylist

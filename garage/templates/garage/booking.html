@@ -28,7 +28,7 @@
           <label for="basic-url" class="form-label">Email</label>
           <div class="input-group mb-3">
             <input
-              type="text"
+              type="email"
               class="form-control"
               id="email"
               required
@@ -67,7 +67,7 @@
           </div>
 
           <div class="input-group">
-            <span class="input-group-text">Note</span>
+            <span class="input-group-text">Ghi chú</span>
             <textarea class="form-control" id="note"></textarea>
           </div>
         </div>
@@ -78,158 +78,177 @@
   </div>
 </div>
 
-<article class="media content-section">
- 
-  {% for day in days %}
-  <div class="media-body">
-    <div class="article-metadata">
- 
-      <small>{{day.date}}</small>
-      <small>{{day.day}}</small>
+<article class="media">
+  <h2 class="media-title">Đặt lịch ngay</h2>
+  <div class="wrap-media-body">
+    {% for day in days %}
+    <div class="media-body">
+      <div class="article-metadata">
+   
+        <small>{{day.date}}</small>
+        <small>{{day.day}}</small>
+      </div>
+  
+      <div class="wrap-button">
+        {% if not day.A_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          8:00
+        </button>
+  
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+         X
+        </button>
+        {% endif %} {% if not day.B_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          9:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.C_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          10:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.D_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          11:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.E_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          01:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+          
+        </button>
+        {% endif %} {% if not day.F_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          02:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.G_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          03:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.H_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          04:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %} {% if not day.I_booked %}
+        <button
+          type="button"
+          class="btn btn-primary enable-button"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          05:00
+        </button>
+        {% else %}
+        <button
+          type="button"
+          class="btn btn-primary bg-secondary border-secondary disable-button"
+          disabled
+        >
+        X
+        </button>
+        {% endif %}
+      </div>
     </div>
-
-    <div class="wrap-button">
-      {% if not day.A_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        8:00
-      </button>
-
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-       X
-      </button>
-      {% endif %} {% if not day.B_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        9:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %} {% if not day.C_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        10:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %} {% if not day.D_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        11:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %} {% if not day.E_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        01:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-        
-      </button>
-      {% endif %} {% if not day.F_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        02:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %} {% if not day.G_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        03:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %} {% if not day.H_booked %}
-      <button
-        type="button"
-        class="btn btn-primary enable-button"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        04:00
-      </button>
-      {% else %}
-      <button
-        type="button"
-        class="btn btn-primary bg-secondary border-secondary disable-button"
-        disabled
-      >
-      X
-      </button>
-      {% endif %}
-    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 </article>
 {% endblock content%}
