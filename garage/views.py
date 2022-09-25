@@ -129,6 +129,7 @@ def BookingPage(request):
     if request.method == 'POST':
         name = request.POST.get("name")
         email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
         date = request.POST.get("date")
         time = request.POST.get("time")
         service = request.POST.get("service")
@@ -136,7 +137,7 @@ def BookingPage(request):
 
         service_b = Service.objects.get(id=service)
        
-        booking = Booking(user = name, email = email, date= date, timeblock= time, service= service_b, note= note)
+        booking = Booking(user = name, email = email, date= date, timeblock= time, service= service_b, note= note, phone_number=phone_number)
         booking.save()
 
 
@@ -147,10 +148,13 @@ def BookingPage(request):
             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
 Đây là thông tin lịch hẹn của anh/chị:
 Tên khách hàng: {name}
+Số ĐT liên lạc: {phone_number}
 Ngày đặt: {date}
 Dịch vụ: {service_b}
 Ghi chú: {note}
 Quý khách vui lòng đến garage vào lúc {time} để được hỗ trợ nhanh nhất.
+
+Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
 """
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [email]

@@ -55,6 +55,7 @@ class Booking(models.Model):
 
 
     user = models.CharField(max_length=255, blank=True, null=True, verbose_name="Khách hàng")
+    phone_number = models.CharField(max_length=255, blank=True, null=True, verbose_name="Số ĐT")
     email = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email")
     date = models.DateField(default=timezone.now,verbose_name="Ngày đặt")
     timeblock = models.CharField(max_length=10, choices=TIMEBLOCK_CHOICES, default="8:00", verbose_name="Thời gian")
@@ -71,7 +72,7 @@ class Booking(models.Model):
         verbose_name_plural  = 'Lịch hẹn'
 
     def __str__(self):
-        return str(self.user) + " đặt lịch hẹn vào ngày" + str(self.date) + " lúc "+ self.timeblock + "giờ."
+        return str(self.user) + " đặt lịch hẹn vào ngày " + str(self.date) + " lúc "+ self.timeblock + "giờ."
 
     @property
     def get_weekday(self):
