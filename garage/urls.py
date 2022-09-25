@@ -13,5 +13,10 @@ urlpatterns = [
 
     path("booking/", booking, name="booking"),
     path("booking_test/", BookingPage, name="booking_test"),
+
+    path('api/services/', service_list),
+    path('api/service/<str:name>', service_detail),
+
+    path('api/booking/', create_booking)
     
 ]   

@@ -1,28 +1,91 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.generic.list import ListView
-
-from django.views.generic.edit import CreateView, FormView
-
-from django.views.generic.detail import DetailView
+import datetime
+from unicodedata import name
 from .models import *
-from django.urls import reverse_lazy
-
-from django.contrib.auth.views import LoginView
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-from django.contrib.auth import login
 from .forms import *
-from django.contrib.auth.models import AnonymousUser
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
-from django.contrib import messages
+from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
+from django.views.generic.detail import DetailView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
 
-
+from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
-import datetime
-# Create your views here.
+
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import BookingSerializer, UserSerializer, GroupSerializer, ServiceSerializer
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+
+
+@api_view(['POST'])
+@csrf_exempt
+def create_booking(request):
+    """
+    Create a new booking
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = BookingSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201, json_dumps_params={'ensure_ascii': False})
+        return JsonResponse(serializer.errors, status=400, json_dumps_params={'ensure_ascii': False})
+
+@api_view(['GET'])
+@csrf_exempt
+def service_list(request):
+    """
+    Get all list of services
+    """
+    if request.method == 'GET':
+        services = Service.objects.all()
+        serializer = ServiceSerializer(services, many=True)
+        return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+@api_view(['GET'])
+@csrf_exempt
+def service_detail(request,name):
+    """
+    Get specific service detail by name
+    """
+    try:
+       
+        service = Service.objects.get(name__contains=name.capitalize())
+       
+    except Service.DoesNotExist:
+        return JsonResponse({'status': 404,'message': 'Service does not exist'})
+
+    if request.method == 'GET':
+        serializer = ServiceSerializer(service)
+        return JsonResponse(serializer.data, json_dumps_params={'ensure_ascii': False})
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 class CustomLoginView(LoginView):
     template_name = 'garage/login.html'

@@ -80,8 +80,6 @@ class Booking(models.Model):
 
   
 
-    def get_absolute_url(self):
-        # returns a complete url string and let view handle the redirect
-        return reverse("session-detail", kwargs={"pk": self.pk})
+
 
 
