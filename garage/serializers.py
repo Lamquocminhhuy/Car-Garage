@@ -17,7 +17,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ['name', 'price', 'time_todo', 'description', 'image']
+        fields = ['id','name', 'price', 'time_todo', 'description', 'image']
 
 class BookingSerializer(serializers.ModelSerializer ):
     class Meta:
