@@ -24,6 +24,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
+from django.http import Http404
 
 
 @api_view(['POST'])
@@ -62,7 +63,7 @@ def service_detail(request,name):
         service = Service.objects.get(name__contains=name.capitalize())
        
     except Service.DoesNotExist:
-        return JsonResponse({'status': 404,'message': 'Service does not exist'})
+        raise Http404
 
     if request.method == 'GET':
         serializer = ServiceSerializer(service)

@@ -2,7 +2,7 @@
 GET http://localhost:8000/api/services/
 
 ### Get service by name
-GET http://localhost:8000/api/service/Căn Chỉnh Bánh Lái
+GET http://localhost:8000/api/service/ferferf
 
 
 
