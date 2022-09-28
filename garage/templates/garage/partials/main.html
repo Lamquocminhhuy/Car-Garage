@@ -75,8 +75,8 @@
         (e.onload = () => {
           window.WebChat.default(
             {
-              customData: { language: "en" },
-              socketUrl: "http://localhost:5005",
+              customData: { language: "vi" },
+              socketUrl: "https://b933-183-80-65-160.ap.ngrok.io",
               socketPath: "/socket.io",
               displayUnreadCount: true,
               showMessageDate: true,
@@ -91,5 +91,6 @@
         }),
         t.insertBefore(e, t.firstChild);
     })();
+    localStorage.clear();
   </script>
 </html>
