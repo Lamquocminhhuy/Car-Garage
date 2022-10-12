@@ -1,5 +1,6 @@
-import datetime
-from unicodedata import name
+from urllib import response
+
+from garage.utils.daylist import generate_daylist
 from .models import *
 from .forms import *
 from django.shortcuts import render, redirect
@@ -25,6 +26,26 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from django.http import Http404
+
+@api_view(['DELETE'])
+def delete_booking(request,booking_id):
+    """
+    Delete booking
+    """
+    if request.method == 'DELETE':
+        booking = Booking.objects.get(booking_id__startswith=booking_id)
+        booking.delete()
+        return response('Deleted')
+
+@api_view(['GET'])
+def get_booking(request,booking_id):
+    """
+    Get booking information
+    """
+    if request.method == 'GET':
+        booking = Booking.objects.get(id__startswith=booking_id)
+        serializer = BookingSerializer(booking)
+        return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
 @api_view(['POST'])
@@ -59,7 +80,7 @@ def service_detail(request,name):
     Get specific service detail by name
     """
     try:
-       
+    
         service = Service.objects.get(name__contains=name.capitalize())
        
     except Service.DoesNotExist:
@@ -129,58 +150,6 @@ class ServiceDetail(DetailView):
 
     
 
-def generate_daylist():
-    daylist = []
-    today = datetime.date.today()
-    map = {
-    "MONDAY": "THỨ HAI",
-    "TUESDAY": "THỨ BA",
-    "WEDNESDAY": "THỨ TƯ",
-    "THURSDAY": "THỨ NĂM",
-    "FRIDAY": "THỨ SÁU",
-    "SATURDAY": "THỨ BẢY",
-    "SUNDAY": "CHỦ NHẬT"
-    }
-    for i in range(7):
-        day = {}
-        curr_day = today + datetime.timedelta(days=i)
-        weekday = curr_day.strftime("%A").upper()
-
-        day["date"] = str(curr_day)
-        day['day'] = map[weekday]
-
-        day["A_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="8:00").exists()
-        )
-        day["B_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="9:00").exists()
-        )
-        day["C_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="10:00").exists()
-        )
-        day["D_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="11:00").exists()
-        )
-        day["E_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="01:00").exists()
-        )
-        day["F_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="02:00").exists()
-        )
-        day["G_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="03:00").exists()
-        )
-        day["H_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="04:00").exists()
-        )
-        day["I_booked"] = (
-            Booking.objects.filter(date=str(curr_day)).filter(timeblock="05:00").exists()
-        )
-        if day["day"] != "SATURDAY":  # Writing lab doesn't open on Saturday
-            daylist.append(day)
-    return daylist
-
-
 def booking(request):
     services = Service.objects.all()
     context = {"days": generate_daylist(), "services": services}
@@ -202,20 +171,19 @@ def BookingPage(request):
         service_b = Service.objects.get(id=service)
        
         booking = Booking(user = name, email = email, date= date, timeblock= time, service= service_b, note= note, phone_number=phone_number)
+   
         booking.save()
 
-
-   
         # Send email
         if email:
             subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
-Đây là thông tin lịch hẹn của anh/chị:
-Tên khách hàng: {name}
-Số ĐT liên lạc: {phone_number}
-Ngày đặt: {date}
-Dịch vụ: {service_b}
-Ghi chú: {note}
+    Đây là thông tin lịch hẹn của anh/chị: 
+    Mã đơn: {booking.id.hex[0:8]}
+    Tên khách hàng: {name}
+    Số ĐT liên lạc: {phone_number}
+    Ngày đặt: {date}
+    Dịch vụ: {service_b}
 Quý khách vui lòng đến garage vào lúc {time} để được hỗ trợ nhanh nhất.
 
 Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
@@ -226,4 +194,4 @@ Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên 
 
 
 
-    return HttpResponse("hshshs")
+    return HttpResponse("Worked")

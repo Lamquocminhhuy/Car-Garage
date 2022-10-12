@@ -19,7 +19,8 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = ['id','name', 'price', 'time_todo', 'description', 'image']
 
-class BookingSerializer(serializers.ModelSerializer ):
+class BookingSerializer(serializers.ModelSerializer):
+   
     class Meta:
         model = Booking
         fields = '__all__' 

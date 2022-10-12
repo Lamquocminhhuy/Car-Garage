@@ -17,6 +17,8 @@ urlpatterns = [
     path('api/services/', service_list),
     path('api/service/<str:name>', service_detail),
 
-    path('api/booking/', create_booking)
+    path('api/booking/', create_booking),
+    path('api/booking/<str:booking_id>', get_booking),
+    path('api/delete/booking/<str:booking_id>', delete_booking)
     
 ]   

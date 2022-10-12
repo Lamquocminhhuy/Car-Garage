@@ -19,3 +19,9 @@ Content-Type: application/json
     "service": 2,
     "note": "Không có"
 }
+
+### Get all booking
+GET http://localhost:8000/api/booking/d81d4c97
+
+### Delete a booking
+DELETE  http://localhost:8000/api/booking/  
