@@ -1,3 +1,4 @@
+from functools import partial
 from urllib import response
 
 from garage.utils.daylist import generate_daylist
@@ -27,15 +28,18 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from django.http import Http404
 
-@api_view(['DELETE'])
-def delete_booking(request,booking_id):
+@api_view(['POST'])
+def update_booking(request,booking_id):
+
     """
-    Delete booking
+    Update booking
     """
-    if request.method == 'DELETE':
-        booking = Booking.objects.get(booking_id__startswith=booking_id)
-        booking.delete()
-        return response('Deleted')
+
+    booking = Booking.objects.get(id__startswith=booking_id)
+    serializer = BookingSerializer(instance=booking, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+    return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 @api_view(['GET'])
 def get_booking(request,booking_id):
@@ -57,8 +61,25 @@ def create_booking(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = BookingSerializer(data=data)
+        print(data)
+        service = Service.objects.get(id=data['service'])
         if serializer.is_valid():
             serializer.save()
+#             subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+#             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
+#     Đây là thông tin lịch hẹn của anh/chị: 
+#     Mã đơn: {data.id.hex[0:8]}
+#     Tên khách hàng: {data.user}
+#     Số ĐT liên lạc: {data.phone_number}
+#     Ngày đặt: {data.date}
+#     Dịch vụ: {service.name}
+# Quý khách vui lòng đến garage vào lúc {data.time} để được hỗ trợ nhanh nhất.
+
+# Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
+# """
+#             email_from = settings.EMAIL_HOST_USER
+#             recipient_list = [data.email]
+#             send_mail( subject, message, email_from, recipient_list )
             return JsonResponse(serializer.data, status=201, json_dumps_params={'ensure_ascii': False})
         return JsonResponse(serializer.errors, status=400, json_dumps_params={'ensure_ascii': False})
 

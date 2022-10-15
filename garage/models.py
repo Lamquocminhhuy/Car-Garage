@@ -1,7 +1,5 @@
 from django.db import models
-
 from django.utils import timezone
-
 from django.utils.html import format_html
 from django.contrib import admin
 import uuid
@@ -57,7 +55,7 @@ class Booking(models.Model):
     ("Đã hủy", "Đã hủy"),
     ]
 
-    id = models.UUIDField(primary_key = True, default=uuid.uuid4, editable=True)
+    id = models.UUIDField(primary_key = True, default=uuid.uuid4, editable=True, verbose_name="Mã Đơn")
     user = models.CharField(max_length=255, blank=True, null=True, verbose_name="Khách hàng")
     phone_number = models.CharField(max_length=255, blank=True, null=True, verbose_name="Số ĐT")
     email = models.CharField(max_length=255, blank=True, null=True, verbose_name="Email")
@@ -76,21 +74,14 @@ class Booking(models.Model):
         verbose_name_plural  = 'Lịch hẹn'
 
     def __str__(self):
-        return str(self.user) + " đặt lịch hẹn vào ngày " + str(self.date) + " lúc "+ self.timeblock + "giờ."
+        return str(self.user) + " đặt lịch hẹn vào ngày " + str(self.date) + " lúc "+ self.timeblock + " giờ."
 
     @property
     def get_weekday(self):
         return self.date.strftime("%A")
 
-    @admin.display
-    def colored_name(self):
-        return format_html(
-            '<span style="color: blue;">{}</span>',
-            self.status,
-        
-        )
 
-  
+    
 
 
 
