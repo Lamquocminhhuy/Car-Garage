@@ -39,6 +39,12 @@ def update_booking(request,booking_id):
     serializer = BookingSerializer(instance=booking, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+        message = f"""Đơn đặt lịch của quý khách {str(serializer.data["status"]).lower()}
+Can Tho Garage xin cảm ơn quý khách."""
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [serializer.data["email"]]
+        send_mail( subject, message, email_from, recipient_list )
     return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 @api_view(['GET'])
@@ -61,25 +67,26 @@ def create_booking(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = BookingSerializer(data=data)
-        print(data)
+     
         service = Service.objects.get(id=data['service'])
         if serializer.is_valid():
             serializer.save()
-#             subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
-#             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
-#     Đây là thông tin lịch hẹn của anh/chị: 
-#     Mã đơn: {data.id.hex[0:8]}
-#     Tên khách hàng: {data.user}
-#     Số ĐT liên lạc: {data.phone_number}
-#     Ngày đặt: {data.date}
-#     Dịch vụ: {service.name}
-# Quý khách vui lòng đến garage vào lúc {data.time} để được hỗ trợ nhanh nhất.
+            # print("Data nè", serializer.data)
+            subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+            message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
+    Đây là thông tin lịch hẹn của anh/chị: 
+    Mã đơn: {serializer.data["id"][0:8]}
+    Tên khách hàng: {data["user"]}
+    Số ĐT liên lạc: {data["phone_number"]}
+    Ngày đặt: {data["date"]}
+    Dịch vụ: {service.name}
+Quý khách vui lòng đến garage vào lúc {data["timeblock"]} để được hỗ trợ nhanh nhất.
 
-# Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
-# """
-#             email_from = settings.EMAIL_HOST_USER
-#             recipient_list = [data.email]
-#             send_mail( subject, message, email_from, recipient_list )
+Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
+"""
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [data["email"]]
+            send_mail( subject, message, email_from, recipient_list )
             return JsonResponse(serializer.data, status=201, json_dumps_params={'ensure_ascii': False})
         return JsonResponse(serializer.errors, status=400, json_dumps_params={'ensure_ascii': False})
 

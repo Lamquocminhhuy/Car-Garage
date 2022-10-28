@@ -11,7 +11,7 @@ Content-Type: application/json
 {
     "user": "Nguyễn Văn A",
     "phone_number": "0123456789",
-    "email": "nguyenvana@gmail.com",    
+    "email": "lamquocminhhuy@gmail.com",    
     "date": "2022-09-25",
     "timeblock": "05:00",
     "service": 2,
@@ -19,12 +19,12 @@ Content-Type: application/json
 }
 
 ### Get a booking
-GET http://localhost:8000/api/booking/d7f5204a
+GET http://localhost:8000/api/booking/19f935a0
 
 ### Update a booking
-POST  http://localhost:8000/api/update/booking/d7f5204a  
+POST  http://localhost:8000/api/update/booking/19f935a0  
 Content-Type: application/json
 
 {
-    "status": "Đã xử lí"
+    "status": "Đã hủy"
 }
