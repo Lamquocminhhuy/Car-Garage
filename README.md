@@ -16,11 +16,11 @@ Car Garage for booking maintanence service. Website for Thesis project.
 4. Install Django Jazzmin: `pip install -U django-jazzmin`
 
 ## Command run project
-
-1. `python manage.py makemigrations`
-2. `python manage.py migrate`
-3. `python manage.py runserver`
-4. `python manage.py colectstatic`
+1. `.\venv\Scripts\activate`
+2. `python manage.py makemigrations`
+3. `python manage.py migrate`
+4. `python manage.py runserver`
+5. `python manage.py colectstatic`
 
 ### Images of Project
 
