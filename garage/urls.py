@@ -11,8 +11,11 @@ urlpatterns = [
 
     path('service/<int:pk>/', ServiceDetail.as_view(), name='service'),
 
+    path('booking/<str:phone_number>/', booking_detail, name='booking_detail'),
+
     path("booking/", booking, name="booking"),
     path("booking_test/", BookingPage, name="booking_test"),
+
 
     path('api/services/', service_list),
     path('api/service/<str:name>', service_detail),
@@ -20,5 +23,7 @@ urlpatterns = [
     path('api/booking/', create_booking),
     path('api/booking/<str:booking_id>', get_booking),
     path('api/update/booking/<str:booking_id>', update_booking)
+
+   
     
 ]   

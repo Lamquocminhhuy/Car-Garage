@@ -18,7 +18,7 @@ class Garage(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural  = 'Thông Tin Cửa Hàng'
+        verbose_name_plural  = '⚙️ Cửa Hàng'
 
 
 class Service(models.Model):
@@ -33,7 +33,7 @@ class Service(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural  = 'Dịch Vụ'
+        verbose_name_plural  = 'Quản Lý Dịch Vụ '
 
 
 class Booking(models.Model):
@@ -66,12 +66,12 @@ class Booking(models.Model):
     status = models.CharField(
         max_length = 20,
         choices = STATUS_CHOICES,
-        default = 'Đang chờ xử lí',
+        default = 'Đang chờ xử lí ',
         verbose_name = "Trạng Thái"
         )
 
     class Meta:
-        verbose_name_plural  = 'Lịch hẹn'
+        verbose_name_plural  = 'Quản Lý Lịch hẹn'
 
     def __str__(self):
         return str(self.user) + " đặt lịch hẹn vào ngày " + str(self.date) + " lúc "+ self.timeblock + " giờ."

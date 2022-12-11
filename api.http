@@ -22,7 +22,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/booking/19f935a0
 
 ### Update a booking
-POST  http://localhost:8000/api/update/booking/19f935a0  
+POST  http://localhost:8000/api/update/booking/9990516a-43bc-4e12-90fc-e6984db6b015  
 Content-Type: application/json
 
 {

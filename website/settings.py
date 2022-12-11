@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'garage.apps.GarageConfig',
     'rest_framework',
+    'django_admin_search',
+
     
 ]
 

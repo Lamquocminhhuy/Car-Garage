@@ -72,7 +72,7 @@ def create_booking(request):
         if serializer.is_valid():
             serializer.save()
             # print("Data nè", serializer.data)
-            subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+            subject = 'Thông báo về lịch hẹn sửa chữa ô tô tại Can Tho Garage'
             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
     Đây là thông tin lịch hẹn của anh/chị: 
     Mã đơn: {serializer.data["id"][0:8]}
@@ -80,6 +80,7 @@ def create_booking(request):
     Số ĐT liên lạc: {data["phone_number"]}
     Ngày đặt: {data["date"]}
     Dịch vụ: {service.name}
+    Xem chi tiết đơn đặt lịch tại: http://localhost:8000/booking/{data["phone_number"]}
 Quý khách vui lòng đến garage vào lúc {data["timeblock"]} để được hỗ trợ nhanh nhất.
 
 Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
@@ -108,7 +109,6 @@ def service_detail(request,name):
     Get specific service detail by name
     """
     try:
-    
         service = Service.objects.get(name__contains=name.capitalize())
        
     except Service.DoesNotExist:
@@ -184,10 +184,20 @@ def booking(request):
    
     return render(request, "garage/booking.html", context)
 
+def booking_detail(request, phone_number):
+
+    booking = Booking.objects.all().filter(phone_number = phone_number)
+
+
+    if len(booking) != 0:
+        return render(request, 'garage/booking_detail.html', {'booking':booking})
+    else:
+        return HttpResponse("No data")
 
 
 def BookingPage(request):
     if request.method == 'POST':
+        
         name = request.POST.get("name")
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_number")
@@ -204,7 +214,7 @@ def BookingPage(request):
 
         # Send email
         if email:
-            subject = 'Thông báo về lịch hẹn sữa chữa ô tô tại Can Tho Garage'
+            subject = 'Thông báo về lịch hẹn sửa chữa ô tô tại Can Tho Garage'
             message = f"""Cảm ơn quý khách đã đặt lịch với chúng tôi,
     Đây là thông tin lịch hẹn của anh/chị: 
     Mã đơn: {booking.id.hex[0:8]}
@@ -213,6 +223,7 @@ def BookingPage(request):
     Ngày đặt: {date}
     Dịch vụ: {service_b}
 Quý khách vui lòng đến garage vào lúc {time} để được hỗ trợ nhanh nhất.
+Xem chi tiết đơn đặt lịch tại: http://localhost:8000/booking/{phone_number}
 
 Nếu có thắc mắc hoặc yêu cầu hỗ trợ quý khách có thể liên lạc với chúng tôi qua sđt 0123456789.
 """

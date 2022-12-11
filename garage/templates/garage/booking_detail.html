@@ -1,0 +1,71 @@
+{% extends 'garage/partials/main.html' %} {% block content %}
+<section class="about_section layout_padding">
+<div class="heading_container heading_center">
+   
+<h2 style="padding-bottom: 20px;">Thông Tin Đặt Lịch - {{customer}}</h2>
+
+</div>
+
+<div class="container">
+<table class="table table-bordered">
+<thead>
+    <tr>
+    <th scope="col">#</th>
+    <th scope="col">Dịch Vụ</th>
+    <th scope="col">Ngày Đặt</th>
+    <th scope="col">Thời Gian</th>
+    <th scope="col">Trạng Thái</th>
+    <th scope="col">Cập Nhật</th>
+    </tr>
+</thead>
+<tbody>
+    {% for data in booking %}
+    <tr>
+    <th scope="row"> {{ forloop.counter }}</th>
+    <td>{{data.service}}</td>
+    <td>{{data.date}}</td>
+    <td>{{data.timeblock}}</td>
+    <td>{{data.status}}</td>
+    {% if data.status == "Đã hủy" %}
+    <td><form>{% csrf_token %}<button class="btn btn-danger submit disabled" id = {{data.id}}>Hủy lịch</button></form></td>
+
+    {% elif data.status == "Đã xử lí" %}
+    <td><form>{% csrf_token %}<button class="btn btn-danger submit disabled" id = {{data.id}}>Hủy lịch</button></form></td>
+
+    {% else %}
+    <td><form>{% csrf_token %}<button class="btn btn-danger submit" id = {{data.id}}>Hủy lịch</button></form></td>
+    {% endif %}
+    </tr>
+ 
+    {% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+<script>
+
+    document.addEventListener('click', (e)=>{
+        let target = e.target;
+        if (target.classList.contains('submit')){
+            let c = confirm("Xác nhận hủy lịch?");
+            if (c){
+                const id = target.id;
+                $.ajax({
+                type: "POST",
+                url: `http://localhost:8000/api/update/booking/${id}`,
+                data: {
+                    "status": "Đã hủy",
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                },
+                success: function () {
+                    console.log("Success");
+                },
+                });
+            }
+           
+          
+        };
+        
+    });
+</script>
+{% endblock content %}

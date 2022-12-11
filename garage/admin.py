@@ -13,6 +13,8 @@ admin.site.unregister(Group)
 class Service_Filter(admin.ModelAdmin):
     list_display = ('name', 'price', 'time_todo','description')
 class Booking_Filter(admin.ModelAdmin):
+    search_fields = ['id']
+    search_help_text = 'Nhập vào mã đơn đặt lịch'
     list_display = ('user','phone_number','service','date','timeblock','status')
     list_filter = (('date',admin.DateFieldListFilter),'timeblock','status')
 

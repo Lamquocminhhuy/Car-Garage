@@ -163,24 +163,8 @@
               <a class="nav-link" href="{% url 'homepage' %}#services"
                 >Dịch vụ</a
               >
-            </li>
+            </li>         
           </ul>
-          <div class="quote_btn-container">
-            {% if request.user.is_authenticated %}
-
-            <div class="wrap-logout">
-              <p style="text-transform: uppercase">
-                Xin chào, {{request.user}} |
-              </p>
-
-              <a href="{% url 'logout' %}"> Đăng Xuất</a>
-            </div>
-
-            {% else %}
-            <a href="{% url 'login' %}">Đăng Nhập</a>
-
-            {% endif %}
-          </div>
         </div>
       </nav>
     </div>
